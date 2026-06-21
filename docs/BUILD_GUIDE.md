@@ -65,14 +65,13 @@ never invent numbers; if a tool returns nothing, say so"; scope = leads, content
 
 > ✅ done · ⏳ in progress · ⬜ not started
 
-1. ⬜ **Repo + docs scaffold** — CLAUDE.md, this guide, `.env.example`, `.gitignore`, README.
-   *Accept:* repo initialized + pushed, `.env` ignored.
-2. ⬜ **Slice 1 — agent skeleton:** Chat Trigger → AI Agent + Groq model + window memory + ONE
-   tool (`get_leads`). *Accept:* in the n8n chat, "how many hot leads?" calls the tool and answers
-   from live data; a follow-up ("and how many cold?") shows memory works.
-3. ⬜ **Slice 2 — more tools:** add `get_content` + `calculator`; tighten the system prompt + tool
-   descriptions so the agent routes correctly. *Accept:* a content question hits `get_content`; a
-   math question uses the calculator; an out-of-scope question is declined gracefully.
+1. ✅ **Repo + docs scaffold** — pushed (github.com/karl22puday-eng/ai-ops-assistant), `.env` ignored.
+2. ✅ **Slice 1 — agent skeleton:** Chat Trigger → AI Agent + Groq model + window memory + `get_leads`.
+   **VERIFIED:** "how many hot leads?" → 7 (tool call); follow-up "and cold?" → 2 (memory works).
+   Assembled in the n8n UI (LangChain `ai_*` sub-node connections), exported to
+   `workflows/01_ops_assistant.json`. Chat model swapped to Groq (free).
+3. ✅ **Slice 2 — more tools:** added `get_content` + `calculator`; system prompt scopes the agent.
+   **VERIFIED working** (content question → get_content; math → calculator; out-of-scope declined).
 4. ⬜ **Slice 3 (stretch) — invoices tool:** add a Google Sheets read tool over the Invoice Ledger.
    *Accept:* "any invoices in review?" returns real rows.
 5. ⬜ **Polish:** README (pitch, architecture diagram, **live chat link**, demo GIF), exported

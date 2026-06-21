@@ -64,13 +64,31 @@ write paths, safe to expose on a public chat.
 
 ## Engineering decisions & what I learned
 
-<!-- filled in as we build: tool-calling agent vs plain RAG, read-only sanitized tools for a safe
-     public chat, tool descriptions as prompt surface, memory for multi-turn, grounding/no-guess
-     system prompt, free-tier guardrails. -->
+- **A tool-calling agent, not plain RAG.** The agent *decides* which tool to call and can compose
+  results (e.g. pull leads, then run the calculator on them). That's a different capability from
+  single-shot retrieval — it reasons about *which* data it needs and *what to do* with it.
+- **Read-only, sanitized tools = a safe public chat.** Every data tool hits an RLS-protected
+  sanitized view (`leads_public`, `content_public`) via the anon key — no PII, no write paths. The
+  agent literally *cannot* mutate or leak sensitive data, so the chat can be exposed publicly.
+- **Tool descriptions are the real prompt engineering.** The model routes to a tool based on its
+  description text — so the description (what it returns, when to use it) is where the accuracy
+  comes from, as much as the system prompt.
+- **Memory makes it a conversation.** A window-buffer memory keyed by the chat session lets
+  follow-ups ("...and how many cold?") keep context without re-stating everything.
+- **Grounding by instruction.** The system prompt forces "use ONLY data returned by tools — never
+  invent numbers; if a tool returns nothing, say so," and scopes the agent to what it can actually
+  answer — so it declines out-of-scope questions instead of hallucinating.
+- **Kept it 100% free.** Built first on a paid model, then deliberately swapped to **Groq
+  `llama-3.3-70b-versatile`** to hold the no-card constraint that defines the whole portfolio.
+- **Reuse over rebuild.** As the capstone, it reads the *existing* systems' data (#1 leads, #2
+  content) rather than duplicating them — integration, not reinvention.
 
 ## Status
 
-🚧 In progress — see [`docs/BUILD_GUIDE.md`](docs/BUILD_GUIDE.md) for the build order.
+✅ Working: hosted chat → AI Agent (Groq) with memory and tools (`get_leads`, `get_content`,
+`calculator`) answering from live data. `get_invoices` (Google Sheets) is a planned stretch tool.
+See [`docs/BUILD_GUIDE.md`](docs/BUILD_GUIDE.md) for the build order and
+[`workflows/01_ops_assistant.json`](workflows/01_ops_assistant.json) for the exported workflow.
 
 ---
 
