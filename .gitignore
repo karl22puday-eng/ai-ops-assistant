@@ -1,0 +1,15 @@
+# Secrets — NEVER commit real keys / OAuth tokens
+.env
+.env.local
+*.key
+*.credentials.json
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Node (if any tooling is added later)
+node_modules/
+npm-debug.log*
