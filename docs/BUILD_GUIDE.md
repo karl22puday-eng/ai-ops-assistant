@@ -72,8 +72,10 @@ never invent numbers; if a tool returns nothing, say so"; scope = leads, content
    `workflows/01_ops_assistant.json`. Chat model swapped to Groq (free).
 3. ✅ **Slice 2 — more tools:** added `get_content` + `calculator`; system prompt scopes the agent.
    **VERIFIED working** (content question → get_content; math → calculator; out-of-scope declined).
-4. ⬜ **Slice 3 (stretch) — invoices tool:** add a Google Sheets read tool over the Invoice Ledger.
-   *Accept:* "any invoices in review?" returns real rows.
+4. ✅ **Slice 3 — invoices tool:** Google Sheets Tool (`Get row(s)`) over the Invoice Ledger,
+   wired as `get_invoices`; system prompt scope extended to invoices. The agent now queries all
+   three sibling systems (leads, content, invoices). *Accept:* "any invoices in review?" returns
+   real rows.
 5. ⬜ **Polish:** README (pitch, architecture diagram, **live chat link**, demo GIF), exported
    workflow JSON, repo About/topics/pin, and a short note framing the 4-project portfolio.
 

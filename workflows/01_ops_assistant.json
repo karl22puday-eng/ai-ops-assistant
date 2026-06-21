@@ -3,31 +3,32 @@
   "nodes": [
     {
       "parameters": {
+        "public": true,
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.chatTrigger",
       "typeVersion": 1.4,
       "position": [
-        0,
-        0
+        1136,
+        96
       ],
-      "id": "cb2d13e9-a914-4aa4-b8de-0f5c737262ac",
+      "id": "beb59525-3f6a-4f22-8448-81d047f9930e",
       "name": "When chat message received",
       "webhookId": "40bc899d-cb2d-483f-afc3-01a4fe2a5280"
     },
     {
       "parameters": {
         "options": {
-          "systemMessage": "You are the Xenogliph Ops Assistant. You answer questions about the business by calling tools for live data. Rules: use ONLY data returned by tools — never invent numbers; if a tool returns nothing, say so. Tools available: get_leads (sales leads/CRM), get_content (content packs + status), calculator (exact math). Scope = leads and content. If asked anything outside that, say what you can help with. Be concise.\n"
+          "systemMessage": "You are the Xenogliph Ops Assistant. You answer questions about the business by calling tools for live data. Rules: use ONLY data returned by tools — never invent numbers; if a tool returns nothing, say so. Tools available: get_leads (sales leads/CRM), get_content (content packs + status), get_invoices (processed invoices + review status), calculator (exact math). Scope = leads, content, and invoices. If asked anything outside that, say what you can help with. Be concise.\n"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        208,
-        0
+        1344,
+        96
       ],
-      "id": "c377ff6a-ccbb-496b-9271-8f2f015f4f77",
+      "id": "9fa5e4e2-09ff-4c03-8b2c-c8701ee8a2eb",
       "name": "AI Agent"
     },
     {
@@ -38,21 +39,27 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
       "typeVersion": 1,
       "position": [
-        80,
-        208
+        1216,
+        304
       ],
-      "id": "91f930be-4d52-4b7d-8ef6-aec884277840",
-      "name": "Groq Chat Model"
+      "id": "56c488e9-0712-4c42-92b9-4d8470f84513",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "vRyLrz5Zg9paTDXG",
+          "name": "Groq account"
+        }
+      }
     },
     {
       "parameters": {},
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.4,
       "position": [
-        224,
-        208
+        1360,
+        304
       ],
-      "id": "689f1f3e-ebfc-40d1-8aa6-48c1eb804a19",
+      "id": "057abb9f-de3e-44c2-99e5-fd7c3833a23d",
       "name": "Simple Memory"
     },
     {
@@ -77,10 +84,10 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.4,
       "position": [
-        368,
-        208
+        1744,
+        304
       ],
-      "id": "ec2fa6c0-8867-49c3-ad4d-8a5d6c1fce54",
+      "id": "9897e402-675b-459d-bfcd-f190408dc57a",
       "name": "HTTP Request"
     },
     {
@@ -94,10 +101,10 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.4,
       "position": [
-        528,
-        208
+        1888,
+        320
       ],
-      "id": "74d8a918-b234-4950-afb0-eb3741ea8a89",
+      "id": "2ac5ecf1-085f-4f48-9aa6-7d9760f2ffd9",
       "name": "HTTP Request1",
       "credentials": {
         "supabaseApi": {
@@ -111,11 +118,46 @@
       "type": "@n8n/n8n-nodes-langchain.toolCalculator",
       "typeVersion": 1,
       "position": [
-        656,
-        224
+        2064,
+        320
       ],
-      "id": "4f03d142-8d65-4a92-8c83-49a96c5d91cd",
+      "id": "5274ced4-a91d-4f81-8a70-2a94d2a56c16",
       "name": "Calculator"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Get processed invoices: vendor, total, currency, status (ok or review), issues, invoice_date, file_name. Use for any question about invoices, vendors, spend, or what is flagged for review.\n",
+        "documentId": {
+          "__rl": true,
+          "value": "1Jno1JLlyaj1BrIsbv09Tc8U35kyLNJl5dKZjn3vOZiQ",
+          "mode": "list",
+          "cachedResultName": "Invoice Ledger",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Jno1JLlyaj1BrIsbv09Tc8U35kyLNJl5dKZjn3vOZiQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Invoices",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Jno1JLlyaj1BrIsbv09Tc8U35kyLNJl5dKZjn3vOZiQ/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        1536,
+        304
+      ],
+      "id": "c88dcdf4-edfc-4d24-869f-83e2b28958d2",
+      "name": "Get row(s) in sheet in Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "kswBWrlrTPS6mEYL",
+          "name": "Google Sheets account"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -185,14 +227,26 @@
           }
         ]
       ]
+    },
+    "Get row(s) in sheet in Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
-  "active": false,
+  "active": true,
   "settings": {
     "executionOrder": "v1",
-    "binaryMode": "separate"
+    "binaryMode": "separate",
+    "availableInMCP": false
   },
-  "versionId": "1558177b-142a-4ad6-adb9-d54f566cfda0",
+  "versionId": "ab25f95a-a3b9-4faa-b722-f0af8d22f096",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "7d7c9c601d4371ed9adb3201424552709ebe8139dc1162432b3d86bc78cffa12"

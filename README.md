@@ -92,8 +92,9 @@ write paths, safe to expose on a public chat.
 
 ## Status
 
-✅ Working & live: hosted chat → AI Agent (Groq) with memory and tools (`get_leads`, `get_content`,
-`calculator`) answering from live data. `get_invoices` (Google Sheets) is a planned stretch tool.
+✅ Working & live: hosted chat → AI Agent (Groq) with memory and **four tools** — `get_leads` &
+`get_content` (Supabase views), `get_invoices` (Google Sheets ledger), and `calculator` — answering
+from live data across all three sibling systems.
 See [`docs/BUILD_GUIDE.md`](docs/BUILD_GUIDE.md) for the build order and
 [`workflows/01_ops_assistant.json`](workflows/01_ops_assistant.json) for the exported workflow.
 
