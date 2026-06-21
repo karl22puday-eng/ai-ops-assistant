@@ -13,7 +13,10 @@
   <img alt="agent" src="https://img.shields.io/badge/pattern-tools%20%2B%20memory-8b7cff" />
 </p>
 
-<!-- Live chat link + demo GIF slot — add once deployed: assets/demo.gif -->
+<p align="center">
+  <a href="https://karlchretien.app.n8n.cloud/webhook/40bc899d-cb2d-483f-afc3-01a4fe2a5280/chat"><b>💬 Try the agent live →</b></a><br/>
+  <sub>Ask it "how many hot leads do we have?" or "what content is pending approval?"</sub>
+</p>
 
 ---
 
@@ -83,9 +86,13 @@ write paths, safe to expose on a public chat.
 - **Reuse over rebuild.** As the capstone, it reads the *existing* systems' data (#1 leads, #2
   content) rather than duplicating them — integration, not reinvention.
 
+## Live demo
+
+**💬 [Chat with the agent](https://karlchretien.app.n8n.cloud/webhook/40bc899d-cb2d-483f-afc3-01a4fe2a5280/chat)** — it's backed by live data; ask about leads or content.
+
 ## Status
 
-✅ Working: hosted chat → AI Agent (Groq) with memory and tools (`get_leads`, `get_content`,
+✅ Working & live: hosted chat → AI Agent (Groq) with memory and tools (`get_leads`, `get_content`,
 `calculator`) answering from live data. `get_invoices` (Google Sheets) is a planned stretch tool.
 See [`docs/BUILD_GUIDE.md`](docs/BUILD_GUIDE.md) for the build order and
 [`workflows/01_ops_assistant.json`](workflows/01_ops_assistant.json) for the exported workflow.
