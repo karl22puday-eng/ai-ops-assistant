@@ -1,0 +1,209 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "cb2d13e9-a914-4aa4-b8de-0f5c737262ac",
+      "name": "When chat message received",
+      "webhookId": "40bc899d-cb2d-483f-afc3-01a4fe2a5280"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are the Xenogliph Ops Assistant. You answer questions about the business by calling tools for live data. Rules: use ONLY data returned by tools — never invent numbers; if a tool returns nothing, say so. Tools available: get_leads (sales leads/CRM), get_content (content packs + status), calculator (exact math). Scope = leads and content. If asked anything outside that, say what you can help with. Be concise.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "c377ff6a-ccbb-496b-9271-8f2f015f4f77",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-5-mini",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        80,
+        208
+      ],
+      "id": "91f930be-4d52-4b7d-8ef6-aec884277840",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "052kJWh8HjQJdDzy",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        224,
+        208
+      ],
+      "id": "689f1f3e-ebfc-40d1-8aa6-48c1eb804a19",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Get qualified sales leads: first_name, score (0-100), temperature (hot/warm/cold), stage, created_at. Use for any question about leads or the sales pipeline.",
+        "url": "https://sjomutxvmiatruokjgjy.supabase.co/rest/v1/leads_public?select=first_name,score,temperature,stage,created_at&order=score.desc",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNqb211dHh2bWlhdHJ1b2tqZ2p5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzNjUyMTIsImV4cCI6MjA5Njk0MTIxMn0.Vrkk26tSiDbMa4Fwhq579Kc1WlOWndtRmzcKCuDdRTg"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNqb211dHh2bWlhdHJ1b2tqZ2p5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzNjUyMTIsImV4cCI6MjA5Njk0MTIxMn0.Vrkk26tSiDbMa4Fwhq579Kc1WlOWndtRmzcKCuDdRTg"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.4,
+      "position": [
+        368,
+        208
+      ],
+      "id": "ec2fa6c0-8867-49c3-ad4d-8a5d6c1fce54",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Get generated content packs: topic, source_title, status (pending/ready/rejected), created_at. Use for questions about content or marketing output.",
+        "url": "https://sjomutxvmiatruokjgjy.supabase.co/rest/v1/content_public?select=topic,source_title,status,created_at&order=created_at.desc",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "supabaseApi",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.4,
+      "position": [
+        528,
+        208
+      ],
+      "id": "74d8a918-b234-4950-afb0-eb3741ea8a89",
+      "name": "HTTP Request1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "B70wiwowkIlD884g",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolCalculator",
+      "typeVersion": 1,
+      "position": [
+        656,
+        224
+      ],
+      "id": "4f03d142-8d65-4a92-8c83-49a96c5d91cd",
+      "name": "Calculator"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculator": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "1558177b-142a-4ad6-adb9-d54f566cfda0",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "7d7c9c601d4371ed9adb3201424552709ebe8139dc1162432b3d86bc78cffa12"
+  },
+  "nodeGroups": [],
+  "id": "RCYXyymJDAOajkkT",
+  "tags": []
+}
